@@ -37,7 +37,9 @@ export default function Navbar() {
           </a>
           {/* Hamburger */}
           <button
+            type="button"
             aria-label="Toggle menu"
+            aria-expanded={mobileOpen}
             className="md:hidden flex flex-col gap-1.5 p-1"
             onClick={() => setMobileOpen((o) => !o)}
           >

@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://mypracti.com'),
   title: 'MyPracti — Dental Practice Websites & AI Solutions',
   description:
     'We design modern websites for dental practices and build AI solutions that help your practice grow.',

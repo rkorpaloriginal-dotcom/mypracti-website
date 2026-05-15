@@ -22,7 +22,7 @@ export default function ThreeCanvas() {
     if (w === 0 || h === 0) return
 
     const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true })
-    renderer.setPixelRatio(window.devicePixelRatio)
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
     renderer.setSize(canvas.clientWidth, canvas.clientHeight)
 
     const scene = new THREE.Scene()
@@ -88,8 +88,6 @@ export default function ThreeCanvas() {
       })
       renderer.render(scene, camera)
     }
-    animate()
-
     const onResize = () => {
       const w = canvas.clientWidth
       const h = canvas.clientHeight
@@ -98,6 +96,16 @@ export default function ThreeCanvas() {
       renderer.setSize(w, h)
     }
     window.addEventListener('resize', onResize)
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (prefersReducedMotion) {
+      renderer.render(scene, camera)
+      return () => {
+        window.removeEventListener('resize', onResize)
+        renderer.dispose()
+      }
+    }
+    animate()
 
     return () => {
       cancelAnimationFrame(animId)
