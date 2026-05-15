@@ -4,20 +4,26 @@ const config: Config = {
   content: [
     './app/**/*.{js,ts,jsx,tsx,mdx}',
     './components/**/*.{js,ts,jsx,tsx,mdx}',
+    './hooks/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
     extend: {
       colors: {
-        brand: {
-          50:  '#eef2ff',
-          100: '#e0e7ff',
-          200: '#c7d2fe',
-          400: '#818cf8',
-          500: '#6366f1',
-          600: '#4f46e5',
-          700: '#4338ca',
-          900: '#1e1b4b',
+        gold: {
+          DEFAULT: '#d4af37',
+          muted: '#b8962e',
+          pale: '#f5d06a',
         },
+        surface: {
+          primary: '#0a0a0f',
+          secondary: '#111118',
+          card: '#0d0d14',
+          darkest: '#050508',
+        },
+      },
+      fontFamily: {
+        'dm-serif': ['var(--font-dm-serif)', 'Georgia', 'serif'],
+        inter: ['var(--font-inter)', 'system-ui', 'sans-serif'],
       },
     },
   },
