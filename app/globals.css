@@ -105,6 +105,16 @@
   }
 }
 
+/* Stagger delays for up to 4 children */
+[data-reveal][data-visible='true'] .card-stagger:nth-child(1) { transition-delay: 0ms; }
+[data-reveal][data-visible='true'] .card-stagger:nth-child(2) { transition-delay: 100ms; }
+[data-reveal][data-visible='true'] .card-stagger:nth-child(3) { transition-delay: 200ms; }
+[data-reveal][data-visible='true'] .card-stagger:nth-child(4) { transition-delay: 300ms; }
+
+[data-reveal][data-visible='true'] .step-stagger:nth-child(1) { transition-delay: 0ms; }
+[data-reveal][data-visible='true'] .step-stagger:nth-child(2) { transition-delay: 200ms; }
+[data-reveal][data-visible='true'] .step-stagger:nth-child(3) { transition-delay: 400ms; }
+
 /* --- Prefers-reduced-motion overrides --- */
 @media (prefers-reduced-motion: reduce) {
   *,
