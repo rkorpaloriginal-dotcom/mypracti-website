@@ -2,114 +2,99 @@
 import { useEffect, useRef } from 'react'
 import * as THREE from 'three'
 
-interface Orb {
-  mesh: THREE.Mesh
-  velocity: THREE.Vector3
-  phase: number
-  speed: number
-}
-
 export default function ThreeCanvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
   useEffect(() => {
     const canvas = canvasRef.current
-    if (!canvas) return
+    // jsdom guard — clientWidth is 0 in tests, skip WebGL init entirely
+    if (!canvas || canvas.clientWidth === 0) return
 
-    // In test environments (jsdom) clientWidth/clientHeight are 0 — skip WebGL init
-    const w = canvas.clientWidth || canvas.offsetWidth || 0
-    const h = canvas.clientHeight || canvas.offsetHeight || 0
-    if (w === 0 || h === 0) return
-
-    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true })
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: false })
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
     renderer.setSize(canvas.clientWidth, canvas.clientHeight)
 
     const scene = new THREE.Scene()
     const camera = new THREE.PerspectiveCamera(
-      60,
+      75,
       canvas.clientWidth / canvas.clientHeight,
       0.1,
       100,
     )
-    camera.position.z = 8
+    camera.position.z = 5
 
-    const ambient = new THREE.AmbientLight(0xffffff, 0.6)
-    scene.add(ambient)
-    const point = new THREE.PointLight(0x6366f1, 2, 20)
-    point.position.set(5, 5, 5)
-    scene.add(point)
+    const COUNT = 2000
+    const positions = new Float32Array(COUNT * 3)
+    const velocities = new Float32Array(COUNT * 3)
 
-    const colours = [0x6366f1, 0x818cf8, 0xa78bfa, 0x4338ca, 0xc7d2fe]
-    const orbs: Orb[] = []
-
-    for (let i = 0; i < 8; i++) {
-      const size = 0.3 + Math.random() * 0.9
-      const geo = new THREE.SphereGeometry(size, 32, 32)
-      const mat = new THREE.MeshStandardMaterial({
-        color: colours[i % colours.length],
-        transparent: true,
-        opacity: 0.25 + Math.random() * 0.2,
-        roughness: 0.1,
-        metalness: 0.3,
-      })
-      const mesh = new THREE.Mesh(geo, mat)
-      mesh.position.set(
-        (Math.random() - 0.5) * 12,
-        (Math.random() - 0.5) * 8,
-        (Math.random() - 0.5) * 6,
-      )
-      scene.add(mesh)
-      orbs.push({
-        mesh,
-        velocity: new THREE.Vector3(
-          (Math.random() - 0.5) * 0.002,
-          (Math.random() - 0.5) * 0.002,
-          0,
-        ),
-        phase: Math.random() * Math.PI * 2,
-        speed: 0.3 + Math.random() * 0.5,
-      })
+    for (let i = 0; i < COUNT; i++) {
+      positions[i * 3]     = (Math.random() - 0.5) * 24  // x: [-12, 12]
+      positions[i * 3 + 1] = (Math.random() - 0.5) * 16  // y: [-8, 8]
+      positions[i * 3 + 2] = (Math.random() - 0.5) * 10  // z: [-5, 5]
+      velocities[i * 3]     = (Math.random() - 0.5) * 0.0006
+      velocities[i * 3 + 1] = (Math.random() - 0.5) * 0.0006
     }
 
-    let animId: number
-    let time = 0
+    const geometry = new THREE.BufferGeometry()
+    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3))
 
-    const animate = () => {
-      animId = requestAnimationFrame(animate)
-      time += 0.01
-      orbs.forEach((orb) => {
-        orb.mesh.position.add(orb.velocity)
-        orb.mesh.position.y += Math.sin(time * orb.speed + orb.phase) * 0.002
-        if (orb.mesh.position.x > 7) orb.mesh.position.x = -7
-        if (orb.mesh.position.x < -7) orb.mesh.position.x = 7
-        if (orb.mesh.position.y > 5) orb.mesh.position.y = -5
-        if (orb.mesh.position.y < -5) orb.mesh.position.y = 5
-      })
-      renderer.render(scene, camera)
+    const material = new THREE.PointsMaterial({
+      size: 0.03,
+      color: 0xd4af37,
+      transparent: true,
+      opacity: 0.4,
+      sizeAttenuation: true,
+    })
+
+    const points = new THREE.Points(geometry, material)
+    scene.add(points)
+
+    let mouseX = 0
+    let mouseY = 0
+    const onMouseMove = (e: MouseEvent) => {
+      mouseX = (e.clientX / window.innerWidth - 0.5) * 0.3
+      mouseY = -(e.clientY / window.innerHeight - 0.5) * 0.3
     }
-    const onResize = () => {
-      const w = canvas.clientWidth
-      const h = canvas.clientHeight
-      camera.aspect = w / h
-      camera.updateProjectionMatrix()
-      renderer.setSize(w, h)
-    }
-    window.addEventListener('resize', onResize)
+    window.addEventListener('mousemove', onMouseMove)
 
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    let animId: number
+
     if (prefersReducedMotion) {
       renderer.render(scene, camera)
-      return () => {
-        window.removeEventListener('resize', onResize)
-        renderer.dispose()
+    } else {
+      const pos = geometry.attributes.position.array as Float32Array
+      const animate = () => {
+        animId = requestAnimationFrame(animate)
+        for (let i = 0; i < COUNT; i++) {
+          pos[i * 3]     += velocities[i * 3]
+          pos[i * 3 + 1] += velocities[i * 3 + 1]
+          if (pos[i * 3] > 12)      pos[i * 3] = -12
+          if (pos[i * 3] < -12)     pos[i * 3] = 12
+          if (pos[i * 3 + 1] > 8)   pos[i * 3 + 1] = -8
+          if (pos[i * 3 + 1] < -8)  pos[i * 3 + 1] = 8
+        }
+        geometry.attributes.position.needsUpdate = true
+        camera.position.x += (mouseX - camera.position.x) * 0.05
+        camera.position.y += (mouseY - camera.position.y) * 0.05
+        renderer.render(scene, camera)
       }
+      animate()
     }
-    animate()
+
+    const onResize = () => {
+      camera.aspect = canvas.clientWidth / canvas.clientHeight
+      camera.updateProjectionMatrix()
+      renderer.setSize(canvas.clientWidth, canvas.clientHeight)
+    }
+    window.addEventListener('resize', onResize)
 
     return () => {
       cancelAnimationFrame(animId)
       window.removeEventListener('resize', onResize)
+      window.removeEventListener('mousemove', onMouseMove)
+      geometry.dispose()
+      material.dispose()
       renderer.dispose()
     }
   }, [])
