@@ -1,9 +1,17 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
+
+const NAV_ITEMS = [
+  { label: 'Services', href: '#services' },
+  { label: 'How It Works', href: '#how-it-works' },
+  { label: 'Contact', href: '#contact' },
+]
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
+  const closeButtonRef = useRef<HTMLButtonElement>(null)
+  const hamburgerRef = useRef<HTMLButtonElement>(null)
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60)
@@ -29,11 +37,7 @@ export default function Navbar() {
 
           {/* Desktop links */}
           <div className="hidden md:flex items-center gap-8">
-            {[
-              { label: 'Services', href: '#services' },
-              { label: 'How It Works', href: '#how-it-works' },
-              { label: 'Contact', href: '#contact' },
-            ].map((item) => (
+            {NAV_ITEMS.map((item) => (
               <a
                 key={item.label}
                 href={item.href}
@@ -57,11 +61,15 @@ export default function Navbar() {
 
             {/* Hamburger */}
             <button
+              ref={hamburgerRef}
               type="button"
               aria-label="Toggle menu"
               aria-expanded={mobileOpen}
               className="md:hidden flex flex-col gap-1.5 p-1"
-              onClick={() => setMobileOpen((o) => !o)}
+              onClick={() => {
+                setMobileOpen(true)
+                setTimeout(() => closeButtonRef.current?.focus(), 0)
+              }}
             >
               <span className="block w-5 h-0.5" style={{ backgroundColor: '#d4af37' }} />
               <span className="block w-5 h-0.5" style={{ backgroundColor: '#d4af37' }} />
@@ -74,21 +82,22 @@ export default function Navbar() {
       {/* Mobile overlay */}
       {mobileOpen && (
         <div
-          className="fixed inset-0 z-50 flex flex-col items-center justify-center"
+          className="fixed inset-0 z-[60] flex flex-col items-center justify-center"
           style={{ backgroundColor: '#0a0a0f' }}
         >
           <button
+            ref={closeButtonRef}
+            type="button"
             className="absolute top-5 right-6 text-white text-2xl"
-            onClick={() => setMobileOpen(false)}
+            onClick={() => {
+              setMobileOpen(false)
+              hamburgerRef.current?.focus()
+            }}
             aria-label="Close menu"
           >
             ✕
           </button>
-          {[
-            { label: 'Services', href: '#services' },
-            { label: 'How It Works', href: '#how-it-works' },
-            { label: 'Contact', href: '#contact' },
-          ].map((item) => (
+          {NAV_ITEMS.map((item) => (
             <a
               key={item.label}
               href={item.href}
