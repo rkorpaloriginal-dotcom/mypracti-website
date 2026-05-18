@@ -9,7 +9,6 @@ describe('Navbar', () => {
 
   it('renders nav links with correct hrefs', () => {
     render(<Navbar />)
-    // Desktop links (always in DOM)
     const servicesLinks = screen.getAllByRole('link', { name: 'Services' })
     expect(servicesLinks[0]).toHaveAttribute('href', '#services')
 
@@ -20,9 +19,9 @@ describe('Navbar', () => {
     expect(contactLinks[0]).toHaveAttribute('href', '#contact')
   })
 
-  it('renders get in touch CTA linking to #contact', () => {
+  it('renders book a free call CTA linking to #contact', () => {
     render(<Navbar />)
-    const cta = screen.getByRole('link', { name: 'Get in touch' })
+    const cta = screen.getByRole('link', { name: 'Book a Free Call' })
     expect(cta).toBeInTheDocument()
     expect(cta).toHaveAttribute('href', '#contact')
   })

@@ -6,58 +6,100 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 10)
+    const onScroll = () => setScrolled(window.scrollY > 60)
     onScroll()
     window.addEventListener('scroll', onScroll)
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
   return (
-    <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled || mobileOpen ? 'bg-white/95 backdrop-blur-md shadow-sm' : 'bg-transparent'
-      }`}
-    >
-      <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-        <span className="text-brand-700 font-bold text-lg tracking-tight">MyPracti</span>
+    <>
+      <nav
+        className="fixed top-0 left-0 right-0 z-50 border-b transition-shadow duration-300"
+        style={{
+          backgroundColor: '#0a0a0f',
+          borderBottomColor: 'rgba(212,175,55,0.15)',
+          boxShadow: scrolled ? '0 1px 0 rgba(212,175,55,0.1)' : 'none',
+        }}
+      >
+        <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+          <span className="font-dm-serif text-white" style={{ fontSize: '18px' }}>
+            MyPracti
+          </span>
 
-        {/* Desktop links */}
-        <div className="hidden md:flex items-center gap-8 text-sm text-slate-600">
-          <a href="#services" className="hover:text-brand-700 transition-colors">Services</a>
-          <a href="#how-it-works" className="hover:text-brand-700 transition-colors">How It Works</a>
-          <a href="#contact" className="hover:text-brand-700 transition-colors">Contact</a>
+          {/* Desktop links */}
+          <div className="hidden md:flex items-center gap-8">
+            {[
+              { label: 'Services', href: '#services' },
+              { label: 'How It Works', href: '#how-it-works' },
+              { label: 'Contact', href: '#contact' },
+            ].map((item) => (
+              <a
+                key={item.label}
+                href={item.href}
+                className="font-inter text-[13px] hover:text-white transition-colors duration-200"
+                style={{ color: '#94a3b8' }}
+              >
+                {item.label}
+              </a>
+            ))}
+          </div>
+
+          <div className="flex items-center gap-3">
+            {/* CTA */}
+            <a
+              href="#contact"
+              className="hidden md:block font-inter font-semibold text-[13px] rounded-[6px] px-[18px] py-[6px] border transition-all duration-200 hover:bg-gold hover:text-surface-primary"
+              style={{ borderColor: '#d4af37', color: '#d4af37' }}
+            >
+              Book a Free Call
+            </a>
+
+            {/* Hamburger */}
+            <button
+              type="button"
+              aria-label="Toggle menu"
+              aria-expanded={mobileOpen}
+              className="md:hidden flex flex-col gap-1.5 p-1"
+              onClick={() => setMobileOpen((o) => !o)}
+            >
+              <span className="block w-5 h-0.5" style={{ backgroundColor: '#d4af37' }} />
+              <span className="block w-5 h-0.5" style={{ backgroundColor: '#d4af37' }} />
+              <span className="block w-5 h-0.5" style={{ backgroundColor: '#d4af37' }} />
+            </button>
+          </div>
         </div>
+      </nav>
 
-        <div className="flex items-center gap-3">
-          <a
-            href="#contact"
-            className="bg-brand-700 text-white text-sm font-semibold px-4 py-2 rounded-lg hover:bg-brand-600 transition-colors"
-          >
-            Get in touch
-          </a>
-          {/* Hamburger */}
-          <button
-            type="button"
-            aria-label="Toggle menu"
-            aria-expanded={mobileOpen}
-            className="md:hidden flex flex-col gap-1.5 p-1"
-            onClick={() => setMobileOpen((o) => !o)}
-          >
-            <span className="block w-5 h-0.5 bg-brand-700" />
-            <span className="block w-5 h-0.5 bg-brand-700" />
-            <span className="block w-5 h-0.5 bg-brand-700" />
-          </button>
-        </div>
-      </div>
-
-      {/* Mobile menu */}
+      {/* Mobile overlay */}
       {mobileOpen && (
-        <div className="md:hidden bg-white/95 backdrop-blur-md border-t border-slate-100 px-6 py-4 flex flex-col gap-4 text-sm text-slate-600">
-          <a href="#services" onClick={() => setMobileOpen(false)} className="hover:text-brand-700 transition-colors">Services</a>
-          <a href="#how-it-works" onClick={() => setMobileOpen(false)} className="hover:text-brand-700 transition-colors">How It Works</a>
-          <a href="#contact" onClick={() => setMobileOpen(false)} className="hover:text-brand-700 transition-colors">Contact</a>
+        <div
+          className="fixed inset-0 z-50 flex flex-col items-center justify-center"
+          style={{ backgroundColor: '#0a0a0f' }}
+        >
+          <button
+            className="absolute top-5 right-6 text-white text-2xl"
+            onClick={() => setMobileOpen(false)}
+            aria-label="Close menu"
+          >
+            ✕
+          </button>
+          {[
+            { label: 'Services', href: '#services' },
+            { label: 'How It Works', href: '#how-it-works' },
+            { label: 'Contact', href: '#contact' },
+          ].map((item) => (
+            <a
+              key={item.label}
+              href={item.href}
+              className="font-inter text-white text-2xl py-4"
+              onClick={() => setMobileOpen(false)}
+            >
+              {item.label}
+            </a>
+          ))}
         </div>
       )}
-    </nav>
+    </>
   )
 }
