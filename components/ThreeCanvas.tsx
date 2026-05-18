@@ -58,7 +58,7 @@ export default function ThreeCanvas() {
     window.addEventListener('mousemove', onMouseMove)
 
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    let animId: number
+    let animId = 0
 
     if (prefersReducedMotion) {
       renderer.render(scene, camera)
