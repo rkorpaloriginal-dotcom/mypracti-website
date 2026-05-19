@@ -1,15 +1,20 @@
 export default function Footer() {
   return (
-    <footer className="bg-brand-900 py-8 px-6">
-      <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-sm">
-        <span className="text-white font-bold text-base">MyPracti</span>
-        <span className="text-slate-400">© 2026 MyPracti. All rights reserved.</span>
-        <div className="flex gap-6 text-slate-400">
+    <footer style={{ backgroundColor: '#050508' }}>
+      <div className="h-px" style={{ background: 'rgba(212,175,55,0.2)' }} />
+      <div className="max-w-6xl mx-auto px-6 py-8 flex flex-col md:flex-row items-center justify-between gap-4">
+        <span className="font-dm-serif text-[18px]" style={{ color: '#d4af37' }}>
+          MyPracti
+        </span>
+        <span className="font-inter text-sm" style={{ color: '#4a5568' }}>
+          © 2026 MyPracti. All rights reserved.
+        </span>
+        <div className="flex gap-6 font-inter text-sm" style={{ color: '#4a5568' }}>
           <a
             href="https://twitter.com"
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:text-white transition-colors"
+            className="hover:text-gold transition-colors"
           >
             Twitter
           </a>
@@ -17,7 +22,7 @@ export default function Footer() {
             href="https://linkedin.com"
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:text-white transition-colors"
+            className="hover:text-gold transition-colors"
           >
             LinkedIn
           </a>
