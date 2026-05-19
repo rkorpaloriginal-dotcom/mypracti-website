@@ -5,7 +5,7 @@ import WaitlistSection from '@/components/WaitlistSection'
 describe('WaitlistSection', () => {
   it('renders the section headline', () => {
     render(<WaitlistSection />)
-    expect(screen.getByText(/Be the first to access the dashboard/i)).toBeInTheDocument()
+    expect(screen.getByText(/Be first to access the platform/i)).toBeInTheDocument()
   })
 
   it('renders the email input', () => {
