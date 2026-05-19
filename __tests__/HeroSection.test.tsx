@@ -12,14 +12,15 @@ vi.mock('next/dynamic', () => ({
 import HeroSection from '@/components/HeroSection'
 
 describe('HeroSection', () => {
-  it('renders the coming soon badge', () => {
+  it('renders the section label', () => {
     render(<HeroSection />)
-    expect(screen.getByText(/Dashboard — Coming Soon/i)).toBeInTheDocument()
+    expect(screen.getByText('DENTAL WEBSITES · AI SOLUTIONS')).toBeInTheDocument()
   })
 
   it('renders the main heading', () => {
     render(<HeroSection />)
-    expect(screen.getByText(/We build websites for/i)).toBeInTheDocument()
+    const heading = screen.getByRole('heading', { level: 1 })
+    expect(heading.textContent).toMatch(/We build websites for/i)
     expect(screen.getByText(/dental practices/i)).toBeInTheDocument()
   })
 
