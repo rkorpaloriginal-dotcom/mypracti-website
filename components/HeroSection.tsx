@@ -16,12 +16,11 @@ export default function HeroSection() {
       <div className="relative z-10 text-center px-6 max-w-[700px] mx-auto">
         {/* Label */}
         <p
-          className="font-inter font-semibold uppercase mb-8"
+          className="font-inter font-semibold uppercase mb-8 animate-hero-label"
           style={{
             fontSize: '10px',
             letterSpacing: '4px',
             color: '#d4af37',
-            animation: 'fadeInUp 300ms cubic-bezier(0.16,1,0.3,1) both',
           }}
         >
           DENTAL WEBSITES · AI SOLUTIONS
@@ -54,12 +53,11 @@ export default function HeroSection() {
 
         {/* Subheading */}
         <p
-          className="font-inter mx-auto mb-10"
+          className="font-inter mx-auto mb-10 animate-hero-sub"
           style={{
             fontSize: '17px',
             maxWidth: '480px',
             color: '#94a3b8',
-            animation: 'fadeInUp 600ms cubic-bezier(0.16,1,0.3,1) 900ms both',
           }}
         >
           We design modern websites and build AI tools that help your practice grow.
@@ -67,8 +65,7 @@ export default function HeroSection() {
 
         {/* CTAs */}
         <div
-          className="flex flex-wrap items-center justify-center gap-4"
-          style={{ animation: 'fadeInUp 600ms cubic-bezier(0.16,1,0.3,1) 1100ms both' }}
+          className="flex flex-wrap items-center justify-center gap-4 animate-hero-ctas"
         >
           <a
             href="#contact"

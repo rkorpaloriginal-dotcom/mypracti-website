@@ -92,6 +92,18 @@
   }
 }
 
+.animate-hero-label {
+  animation: fadeInUp 300ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-hero-sub {
+  animation: fadeInUp 600ms cubic-bezier(0.16, 1, 0.3, 1) 900ms both;
+}
+
+.animate-hero-ctas {
+  animation: fadeInUp 600ms cubic-bezier(0.16, 1, 0.3, 1) 1100ms both;
+}
+
 /* --- Scroll indicator pulse --- */
 @keyframes scrollPulse {
   0%,
