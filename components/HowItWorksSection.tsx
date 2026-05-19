@@ -1,42 +1,90 @@
+'use client'
+import { useRef } from 'react'
+import { useScrollReveal } from '@/hooks/useScrollReveal'
+
 const steps = [
   {
-    number: 1,
+    number: '1',
     title: 'We build your site',
-    description: 'Custom design tailored to your practice and brand.',
+    body: 'Custom design tailored to your practice and brand.',
   },
   {
-    number: 2,
+    number: '2',
     title: 'We add AI tools',
-    description: 'Chatbots, smart booking, and automation built in.',
+    body: 'Chatbots, smart booking, and automation built in.',
   },
   {
-    number: 3,
+    number: '3',
     title: 'Your practice grows',
-    description: 'More patients, less admin, better experience.',
+    body: 'More patients, less admin, better experience.',
   },
 ]
 
 export default function HowItWorksSection() {
+  const sectionRef = useRef<HTMLElement>(null)
+  useScrollReveal(sectionRef)
+
   return (
-    <section id="how-it-works" className="bg-white py-24 px-6">
+    <section
+      ref={sectionRef}
+      id="how-it-works"
+      data-reveal
+      className="py-24 px-6"
+      style={{ backgroundColor: '#111118' }}
+    >
       <div className="max-w-4xl mx-auto">
+        <div className="gold-rule mb-16" />
+
         <div className="text-center mb-16">
-          <p className="text-brand-500 text-xs font-bold uppercase tracking-widest mb-3">
-            The Process
+          <p
+            className="font-inter font-semibold uppercase mb-4"
+            style={{ fontSize: '10px', letterSpacing: '4px', color: '#d4af37' }}
+          >
+            THE PROCESS
           </p>
-          <h2 className="text-3xl md:text-4xl font-extrabold text-brand-900 tracking-tight">
+          <h2 className="font-dm-serif text-white" style={{ fontSize: 'clamp(32px,5vw,48px)' }}>
             How it works
           </h2>
         </div>
+
         <div className="relative flex flex-col md:flex-row gap-12 md:gap-0">
-          <div className="hidden md:block absolute top-6 left-[16%] right-[16%] h-0.5 bg-gradient-to-r from-brand-200 via-brand-700 to-brand-200" />
-          {steps.map((step) => (
-            <div key={step.number} className="flex-1 text-center px-6">
-              <div className="w-12 h-12 rounded-full bg-brand-700 text-white text-lg font-extrabold flex items-center justify-center mx-auto mb-5 relative z-10">
+          {/* Desktop connector — dashed gold line between step circles */}
+          <svg
+            className="hidden md:block absolute"
+            style={{ top: '22px', left: '16%', width: '68%', height: '2px' }}
+            preserveAspectRatio="none"
+            aria-hidden="true"
+          >
+            <line
+              x1="0"
+              y1="1"
+              x2="100%"
+              y2="1"
+              stroke="rgba(212,175,55,0.3)"
+              strokeWidth="1"
+              strokeDasharray="4 4"
+            />
+          </svg>
+
+          {steps.map((step, i) => (
+            <div
+              key={step.number}
+              className="step-stagger flex-1 text-center px-6"
+              style={{ transitionDelay: `${i * 200}ms` }}
+            >
+              <div
+                className="font-dm-serif text-white w-11 h-11 rounded-full flex items-center justify-center mx-auto mb-5 relative z-10 text-[20px]"
+                style={{
+                  border: '1px solid rgba(212,175,55,0.4)',
+                  backgroundColor: '#111118',
+                }}
+              >
                 {step.number}
               </div>
-              <h3 className="font-bold text-brand-900 mb-2">{step.title}</h3>
-              <p className="text-sm text-slate-500 leading-relaxed">{step.description}</p>
+              <h3 className="font-inter font-semibold text-white mb-2">{step.title}</h3>
+              <p className="font-inter text-[14px]" style={{ color: '#94a3b8' }}>
+                {step.body}
+              </p>
             </div>
           ))}
         </div>
