@@ -26,7 +26,8 @@ export default function WaitlistSection() {
       } else {
         setStatus('error')
       }
-    } catch {
+    } catch (err) {
+      console.error('Waitlist form error:', err)
       setStatus('error')
     }
   }
@@ -88,6 +89,7 @@ export default function WaitlistSection() {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              aria-label="Email address"
               placeholder="your@practice.com"
               required
               className="flex-1 min-w-0 px-4 py-3 rounded-lg font-inter text-sm text-white outline-none focus:ring-2 focus:ring-gold"
