@@ -7,6 +7,8 @@ const NAV_ITEMS = [
   { label: 'Contact', href: '#contact' },
 ]
 
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:5173'
+
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -50,6 +52,15 @@ export default function Navbar() {
           </div>
 
           <div className="flex items-center gap-3">
+            {/* Login */}
+            <a
+              href={`${APP_URL}/login`}
+              className="hidden md:block font-inter text-[13px] transition-colors duration-200"
+              style={{ color: '#94a3b8' }}
+            >
+              Login
+            </a>
+
             {/* CTA */}
             <a
               href="#contact"
@@ -107,6 +118,13 @@ export default function Navbar() {
               {item.label}
             </a>
           ))}
+          <a
+            href={`${APP_URL}/login`}
+            className="font-inter text-2xl py-4"
+            style={{ color: '#d4af37' }}
+          >
+            Login
+          </a>
         </div>
       )}
     </>

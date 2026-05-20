@@ -30,4 +30,13 @@ describe('Navbar', () => {
     render(<Navbar />)
     expect(screen.getByRole('button', { name: /Toggle menu/i })).toBeInTheDocument()
   })
+
+  it('renders login link pointing to the dental app', () => {
+    render(<Navbar />)
+    const loginLinks = screen.getAllByRole('link', { name: 'Login' })
+    expect(loginLinks.length).toBeGreaterThan(0)
+    loginLinks.forEach((link) => {
+      expect(link).toHaveAttribute('href', expect.stringContaining('/login'))
+    })
+  })
 })
